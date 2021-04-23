@@ -29,19 +29,43 @@ class PostController extends Controller
     }
 
     
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         if(Gate::denies('logged-in')){
             return redirect('/login');
         }
+    $request->validate([
+        'title' => 'required|max:100',
+        'description' => 'required'
+    ]);
 
-        $post = new Post();
-        $post->Title = $request->Title;
-        $post->Description = $request->Description;
-        $post->save();
+    if($request->hasFile('img')){
 
-        return redirect('/posts');
+        $filenameWithExt = $request->file('img')->getClientOriginalName();
+
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        
+        $extension = $request->file('img')->getClientOriginalExtension();
+
+        $filenameToStore = $filename.'_'.time().'.'.$extension;
+
+        $path = $request->file('img')->storeAs('public/img', $filenameToStore);
+    } else{
+           
+        $filenameToStore = '';
     }
+
+    $post = new Post();
+    $post->fill($request->all());
+    $post->img = $filenameToStore;
+
+
+    if ($post->save()){
+        return redirect('/posts')->with('status','Sucessfully save');
+    }
+
+    return redirect('/posts');
+
+}
 
     
     public function show($id)
@@ -67,6 +91,11 @@ class PostController extends Controller
         if(Gate::denies('logged-in')){
             return redirect('/login');
         }
+
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required'
+        ]);
 
         $post = Post::find($id);
         $post->title = $request->Title;

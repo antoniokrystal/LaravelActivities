@@ -7,6 +7,11 @@
             {{-- create a new post --}}
             <a class="btn button btn-info" href="/posts/create">Create New</a>
             <br><br>
+            @if (session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>                
+            @endif
             <div class="card">       
                 <div class="card-body">
                     <table class="table">

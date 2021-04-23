@@ -27,6 +27,21 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="Description" class="col-md-4 col-form-label text-md-right">Image</label>
+                            <div class="col-md-6">
+                                
+                                @if ($post->img)
+
+                                 <img height="185" src="{{ asset('/storage/img/'.$post->img) }} ">
+                              @else
+                                  No image available
+                                 @endif
+
+                            </div>
+                        </div>
+
+
                         
                         
                     </form>
