@@ -40,11 +40,13 @@
 
                             </div>
                         </div>
-
-
-                        
                         
                     </form>
+                    
+                    <br>
+
+                         @include('/posts/comments')
+   
                 </div>
             </div>
         </div>
